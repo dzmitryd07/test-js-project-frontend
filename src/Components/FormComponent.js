@@ -27,12 +27,12 @@ function FormComponent(props) {
     const findFormErrors = () => {
         const {name, message} = form
         const newErrors = {}
-        let nameValidator = /^[a-zA-Z0-9_ ]+$/gi;
+        let nameValidator = /^[a-zA-Z0-9_]+$/gi;
         let messageValidator = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
         if (!name || name === '') newErrors.name = 'The field cannot be blank'
-        else if (!nameValidator.test(name)) newErrors.name = 'The field could contain only latin letters, numbers and underscore symbol'
+        else if (!nameValidator.test(name)) newErrors.name = 'The field cannot contain only latin letters, numbers and underscore symbol'
         if (!message || message === '') newErrors.message = 'The field cannot be blank'
-        else if (message.match(messageValidator)) newErrors.message = 'The field could not contain hypelinks'
+        else if (message.match(messageValidator)) newErrors.message = 'The field cannot not contain hypelinks'
         return newErrors
     }
 
