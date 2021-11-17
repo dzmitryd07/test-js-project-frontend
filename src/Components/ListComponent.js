@@ -19,4 +19,4 @@ function ListComponent(props) {
     );
 }
 
-export default ListComponent;
+export default React.memo(ListComponent);

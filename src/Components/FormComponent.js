@@ -1,4 +1,4 @@
-import {Button, Form, Alert} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import React, {useState, useEffect, useRef} from "react";
 
 function FormComponent(props) {
@@ -55,6 +55,10 @@ function FormComponent(props) {
         if (props.status != null && props.status.status === 201) {
             console.log('Message succesfully created', props.status.status);
             textarea.current.value = '';
+            setForm({
+                ...form,
+                'message': ''
+            })
         } else if (props.status != null) {
             console.log(props.status);
         }
@@ -96,4 +100,4 @@ function FormComponent(props) {
     );
 }
 
-export default FormComponent;
+export default React.memo(FormComponent);

@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+### Описание ###
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Приложение "Guest book" разработано с использованием технологий: React, React-Bootstrap для клиентской части,
+Node.js/Express (серверная часть) и MongoDB (база данных).
 
-## Available Scripts
+Репозиторий cерверной части - https://github.com/dzmitryd07/test-js-project-backend
 
-In the project directory, you can run:
+Репозиторий клиентской части - https://github.com/dzmitryd07/test-js-project-frontend
 
-### `npm start`
+Демо-версия приложения - https://test-project-js.herokuapp.com
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Решенные задачи ###
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
++ Задеплоена рабочая версия приложения
++ Весь функционал приложения работает корректно
+    + при заходе на страницу из другого браузера сообщение остается на месте (хранение данных на сервере)
+    + после принудительной перезагрузки страницы сообщение не исчезает, не перемещается
+    + новое сообщение содержит имя отправителя и текст
+    + сообщения отсортированы по убыванию даты (новые вверху)
+    + новое сообщение добавляется в начало (вверх) списка сообщений
+    + новое сообщение добавляется без перезагрузки страницы
+    + сообщение отправляется по клику на кнопку и по Ctrl+Enter
+    + структура формы отправки сообщения: имя, текст, кнопка
 
-### `npm test`
++ Frontend
+    - [ ] обработаны ответы сервера (сообщение добавлено, не добавлено...)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    + адаптивная верстка
+    + после отправки формы очищается поле текст сообщения
+    + после отправки формы НЕ очищается поле автор сообщения
+    + отсутствуют лишние перерендеры
+    + использованы переменные окружения
 
-### `npm run build`
+    * использованы хуки useState, useEffect, useRef
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    + JS валидация формы и уведомления об ошибках
+        + есть уведомление о том, какая в каком поле ошибка
+        + уведомление об ошибке скрывается при начале ввода в соответствующее поле
+        + уведомления об ошибках при появлении не сдвигают другие поля
+        + использованы регулярные выражения в валидации (запрет на добавление гиперссылок)
+        + нельзя отправить поле имя с недопустимыми символами (допустимо: латинские буквы, цифры, знак нижнего
+          подчеркивания)
+        + нельзя отправить визуально пустые поля
+    + при наведении и других событиях элементы приложения не смещаются
+    + использован какой-либо из UI фреймворков (React, React-Bootstrap)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
++ Backend
+    + код структурирован
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    - [ ] обрабатываются ошибки
 
-### `npm run eject`
+    + входящие данные валидируются
+    + при добавлении сообщения сервер возвращает статус и новое сообщение (не весь список)
+    + используется база данных
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Функционал приложения ###
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Приложение "Guest book" представляет возможность пользователю оставить свое сообщение и ознакомиться с сообщениями,
+оставленными ранее.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+В клиентской части приложения предоставлена форма для отправки сообщения, которая содержит поля "Имя" (Name), "
+Сообщение" (Message) и кнопку "Отправить" (Send) для отправки POST-запроса на серверную часть приложения и сохранения
+нового сообщения в базу данных.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+В процессе сохранения применяется валидация заполненных полей на пустоту, допустимые символы.
 
-## Learn More
+После успешного добавления сообщения в базу данных, сообщение отобразится вверху списка сообщений.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Рабочая инструкция по сборке и запуску ###
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Для запуска серверной части**
 
-### Code Splitting
+1. Клонировать репозиторий https://github.com/dzmitryd07/test-js-project-backend
+2. В директории проекта выполнить **_npm install_** для установки необходимых приложению пакетов.
+3. В файле .env (создать при отсутствии) указать необходимый порт и строку подключения к базе данных MongoDB.
+4. Выполнить **_npm start_** или **_node server.js_**
+5. При успешном запуске сервера, открыть в браузере запущенную версию [http://localhost:3001](http://localhost:3001) (или по
+   указанному выше порту)
+   ** при наличии директории **build** - по адресу [http://localhost:3001](http://localhost:3001/) будет доступна
+   клиентская часть приложения
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Для запуска клиентской части**
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Клонировать репозиторий https://github.com/dzmitryd07/test-js-project-frontend
+2. В директории проекта выполнить **_npm install_** для установки необходимых приложению пакетов. 
+3. Выполнить **_npm start_**.
+4. При успешном запуске, открыть в браузере запущенную версию [http://localhost:3000](http://localhost:3000)
+5. Для сборки production-версии - выполнить **npm run build**  
