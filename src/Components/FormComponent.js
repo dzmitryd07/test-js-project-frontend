@@ -1,16 +1,11 @@
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Alert} from "react-bootstrap";
 import React, {useState, useEffect, useRef} from "react";
 
 function FormComponent(props) {
 
     const [form, setForm] = useState({});
     const [errors, setErrors] = useState({});
-    const formRef = useRef(null);
-    const [inputValue, setInputValue] = useState("");
-
-    const handleUserInput = (e) => {
-        setInputValue(e.target.value);
-    };
+    const textarea = useRef(null);
 
     const setField = (field, value) => {
         setForm({
@@ -44,7 +39,7 @@ function FormComponent(props) {
         }
 
         window.addEventListener('keyup', onKeyup);
-    });
+    }, []);
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -56,13 +51,23 @@ function FormComponent(props) {
         }
     }
 
+    useEffect(() => {
+        if (props.status != null && props.status.status === 201) {
+            console.log('Message succesfully created', props.status.status);
+            textarea.current.value = '';
+        } else if (props.status != null) {
+            console.log(props.status);
+        }
+    }, [props.status]);
+
     return (
         <>
-            <Form noValidate ref={formRef}>
+            <Form noValidate>
                 <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
                     <Form.Control required
-                                  type="text" name="name"
+                                  type="text"
+                                  name="name"
                                   onChange={e => setField('name', e.target.value)}
                                   isInvalid={!!errors.name}
                                   placeholder="Enter your name"/>
@@ -72,9 +77,12 @@ function FormComponent(props) {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Message</Form.Label>
-                    <Form.Control required as="textarea" rows={3} name="message"
+                    <Form.Control required as="textarea"
+                                  rows={3}
+                                  name="message"
                                   onChange={e => setField('message', e.target.value)}
                                   isInvalid={!!errors.message}
+                                  ref={textarea}
                                   placeholder="Please leave your message here"/>
                     <Form.Control.Feedback type='invalid'>
                         {errors.message}

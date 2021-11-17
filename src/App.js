@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import "./App.css";
 import {Row, Col, Container} from "react-bootstrap";
 import FormComponent from "./Components/FormComponent";
 import ListComponent from "./Components/ListComponent";
@@ -9,13 +8,6 @@ function App() {
     const [items, setItems] = useState([],);
     const [status, setStatus] = useState(null);
     const url = process.env.REACT_APP_BACKEND_URL;
-
-    const loadData = async () => {
-        const response = await fetch(url);
-        const data = await response.json();
-        setIsLoaded(true);
-        setItems(data);
-    };
 
     const postData = async (data = {}) => {
         const requestOptions = {
@@ -32,32 +24,47 @@ function App() {
                     const error = (data && data.message) || response.status;
                     return Promise.reject(error);
                 }
-                if (response.status === 201){
-                    setStatus(response.status);
+                if (response.status === 201) {
+                    setItems(oldArray => [data, ...oldArray]);
+                    setStatus(response);
                 }
-                items.unshift(data);
-                setItems(oldArray => [...oldArray, items]);
             })
     }
 
     useEffect(() => {
-        loadData();
-    });
+        const fetchData = async (data = {}) => {
+            fetch(url)
+                .then(async response => {
+                    const isJson = response.headers.get('content-type')?.includes('application/json');
+                    const data = isJson && await response.json();
+                    if (!response.ok) {
+                        const error = (data && data.message) || response.status;
+                        return Promise.reject(error);
+                    }
+                    setItems(data);
+                    setIsLoaded(true);
+                })
+        }
+
+        fetchData();
+    }, [url]);
 
     return (
-        <Container fluid={"md"}>
-            <Row className="justify-content-md-center">
-                <h1>{process.env.REACT_APP_WEBSITE_NAME}</h1>
+        <Container fluid>
+            <Row className="justify-content-md-center mt-5">
+                <Col xs lg="6" md="6">
+                    <h1>{process.env.REACT_APP_WEBSITE_NAME}</h1>
+                </Col>
             </Row>
 
-            <Row>
-                <Col>
+            <Row className="justify-content-md-center mt-5">
+                <Col xs lg="6" md="6">
                     <FormComponent postData={postData} status={status}/>
                 </Col>
             </Row>
 
-            <Row className="mt-5">
-                <Col>
+            <Row className="justify-content-md-center mt-5">
+                <Col xs lg="6" md="6">
                     {!isLoaded &&
                     <div>Loading messages...</div>}
                     <ListComponent items={items}/>
